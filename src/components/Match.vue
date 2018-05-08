@@ -1,24 +1,32 @@
 <template>
-  <div class="matchWrapper" :class="{isDone}">
+  <div class="matchWrapper" :class="[match.done ? 'isDone' : '']">
     <table class="oneMatchTable">
       <thead>
         <tr>
-          <th colspan="3">第{{matchNumber}}场</th>
+          <th class="header" colspan="3" @click="toggleGameDone(match)">第{{match.matchNumber}}场</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="team" :class="[winnerTeam === 'one' ? 'pop' : '']">
-            <player-button v-for="player in teamOnePlayers" :key="player.number">
-              {{ player.number }}
+          <td
+            class="team"
+            :class="[match.winner === 'one' ? 'pop' : '']"
+            @click="setWinner(match, 'one')"
+          >
+            <player-button v-for="player in match.one" :key="player" :isTop="isTop(player)">
+              {{ player }}
             </player-button>
           <td class="middle">
             <img class="vsImage" src="../assets/vs.png" />
           </td>
           </td>
-          <td class="team" :class="[winnerTeam === 'two' ? 'pop' : '']">
-            <player-button v-for="player in teamTwoPlayers" :key="player.number">
-              {{ player.number }}
+          <td
+            class="team"
+            :class="[match.winner === 'two' ? 'pop' : '']"
+            @click="setWinner(match, 'two')"
+          >
+            <player-button v-for="player in match.two" :key="player" :isTop="isTop(player)">
+              {{ player }}
             </player-button>
           </td>
         </tr>
@@ -36,11 +44,28 @@ export default {
     PlayerButton
   },
   props: {
-    matchNumber: Number,
-    teamOnePlayers: Array,
-    teamTwoPlayers: Array,
-    isDone: Boolean,
-    winnerTeam: String
+    match: Object,
+    topPlayers: Array
+  },
+  methods: {
+    toggleGameDone: function (match) {
+      match.done = !match.done;
+      if (!match.done) {
+        match.winner = '';
+      }
+    },
+    setGameDone: function (match) {
+      if (!match.done) {
+        match.done = true;
+      }
+    },
+    setWinner: function (match, winner) {
+      this.setGameDone(match);
+      match.winner = winner;
+    },
+    isTop: function (player) {
+      return this.topPlayers.includes(player);
+    }
   }
 }
 </script>
@@ -72,6 +97,10 @@ export default {
   border-radius: 2px;
   border-style: hidden;
   box-shadow: 0 0 0 2px green;
+}
+
+.header {
+  cursor: pointer;
 }
 
 .oneMatchTable tr {

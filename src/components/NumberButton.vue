@@ -5,11 +5,11 @@
 </template>
 
 <script>
-  export default {
-    name: 'NumberButton',
-    props: {
-      number: Number
-    }
+export default {
+  name: 'NumberButton',
+  props: {
+    number: Number
+  }
 }
 </script>
 

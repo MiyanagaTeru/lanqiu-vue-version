@@ -19,7 +19,6 @@
           <td class="middle">
             <img class="vsImage" src="../assets/vs.png" />
           </td>
-          </td>
           <td
             class="team"
             :class="[match.winner === 'two' ? 'pop' : '']"

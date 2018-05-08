@@ -2,7 +2,11 @@
   <div id="app">
     <div v-if="step == 'selectNumber'">
       <div>选择人数</div>
-      <NumberButton v-for="number in staticNumbers" @click.native="numberSelected(number)">
+      <NumberButton
+        v-for="(number, index) in staticNumbers"
+        @click.native="numberSelected(number)"
+        :key="index"
+      >
         {{ number }}
       </NumberButton>
     </div>
@@ -11,8 +15,9 @@
         重新分组
       </NormalButton>
       <Match
-        v-for="match in bracket"
+        v-for="(match, index) in bracket"
         v-if="typeof(match) == 'object'"
+        :key="index"
         :match="match"
         :topPlayers="topPlayers"
       />
